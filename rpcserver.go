@@ -10,8 +10,8 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/vault/api"
-	"github.com/nydig/lndsigner/keyring"
-	"github.com/nydig/lndsigner/proto"
+	"github.com/nydig-oss/lndsigner/keyring"
+	"github.com/nydig-oss/lndsigner/proto"
 	"github.com/tv42/zbase32"
 	"google.golang.org/grpc"
 )

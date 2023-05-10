@@ -11,7 +11,7 @@ import (
 	"fmt"
 
 	"github.com/btcsuite/btcd/btcutil/psbt"
-	"github.com/nydig/lndsigner/proto"
+	"github.com/nydig-oss/lndsigner/proto"
 )
 
 // walletKit is a sub-RPC server that exposes a tool kit which allows clients

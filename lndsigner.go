@@ -19,7 +19,7 @@ import (
 	"syscall"
 
 	"github.com/hashicorp/vault/api"
-	"github.com/nydig/lndsigner/vault"
+	"github.com/nydig-oss/lndsigner/vault"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )

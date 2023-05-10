@@ -17,7 +17,7 @@ import (
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
 	flags "github.com/jessevdk/go-flags"
-	"github.com/nydig/lndsigner/vault"
+	"github.com/nydig-oss/lndsigner/vault"
 )
 
 const (

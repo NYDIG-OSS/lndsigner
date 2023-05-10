@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/vault/api"
 	"github.com/hashicorp/vault/sdk/plugin"
-	"github.com/nydig/lndsigner/vault"
+	"github.com/nydig-oss/lndsigner/vault"
 )
 
 func main() {

@@ -4,11 +4,11 @@ ARG gover=1.20.3
 
 FROM golang:$gover AS release-builder
 
-COPY . /go/src/github.com/nydig/lndsigner
+COPY . /go/src/github.com/nydig-oss/lndsigner
 
-RUN cd /go/src/github.com/nydig/lndsigner \
+RUN cd /go/src/github.com/nydig-oss/lndsigner \
     && CGO_ENABLED=0 go install -buildvcs=false \
-       github.com/nydig/lndsigner/cmd/...
+       github.com/nydig-oss/lndsigner/cmd/...
 
 ### Build an Alpine image
 FROM alpine:3.17 as alpine

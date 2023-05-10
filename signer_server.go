@@ -11,9 +11,9 @@ import (
 
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/schnorr"
-	"github.com/nydig/lndsigner/keyring"
-	"github.com/nydig/lndsigner/proto"
-	"github.com/nydig/lndsigner/vault"
+	"github.com/nydig-oss/lndsigner/keyring"
+	"github.com/nydig-oss/lndsigner/proto"
+	"github.com/nydig-oss/lndsigner/vault"
 )
 
 // Server is a sub-server of the main RPC server: the signer RPC. This sub RPC

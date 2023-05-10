@@ -19,7 +19,7 @@ import (
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
 	"github.com/hashicorp/vault/api"
-	"github.com/nydig/lndsigner/vault"
+	"github.com/nydig-oss/lndsigner/vault"
 )
 
 // signMethod defines the different ways a signer can sign, given a specific

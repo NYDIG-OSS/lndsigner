@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/nydig/lndsigner"
+	"github.com/nydig-oss/lndsigner"
 )
 
 func main() {

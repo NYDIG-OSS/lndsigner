@@ -8,7 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  VAULT_IMAGE_NAME: nydig/vault-plugin-lndsigner
+  VAULT_IMAGE_NAME: nydig-oss/vault-plugin-lndsigner
   GO_VERSION: 1.20.3
 
 jobs:
@@ -67,7 +67,7 @@ jobs:
             ### vault-plugin-lndsigner
             Pre-built extensions of the latest [base Vault images](https://hub.docker.com/_/vault) with `vault-plugin-lndsigner` pre-installed are available here:
 
-            [${{ env.REGISTRY }}/${{ env.VAULT_IMAGE_NAME }}](https://github.com/nydig/lndsigner/pkgs/container/vault-plugin-lndsigner)
+            [${{ env.REGISTRY }}/${{ env.VAULT_IMAGE_NAME }}](https://github.com/nydig-oss/lndsigner/pkgs/container/vault-plugin-lndsigner)
 
             Note that the images within this package are provided for testing purposes only. Running a Vault image from an untrusted source in production is not recommended.
 
@@ -116,7 +116,7 @@ jobs:
             org.opencontainers.image.title=Vault (with lndsigner)
             org.opencontainers.image.description=The base Hashicorp Vault image (library/vault), with the lndsigner plugin pre-installed.
             org.opencontainers.image.vendor=Hashicorp (Vault), NYDIG (lndsigner)
-            org.opencontainers.image.source=https://github.com/nydig/lndsigner
+            org.opencontainers.image.source=https://github.com/nydig-oss/lndsigner
             org.opencontainers.image.version=${{ github.ref_name }}
             org.opencontainers.image.licenses=(MPL-2.0 AND MIT)
             org.opencontainers.image.base.name=docker.io/library/vault:${{ matrix.vault_version }}
