@@ -18,9 +18,9 @@ ifeq ($(CPLATFORM), arm64)
 endif 
 
 GOVER         := 1.20.3
-LND           := v0.16.2-beta
-BITCOIND      := 24.0.1
-VAULT         := 1.12.2
+LND           := v0.16.4-beta
+BITCOIND      := 25.0
+VAULT         := 1.12.3
 
 # docker builds a builder image for the host platform if one isn't cached.
 docker:
