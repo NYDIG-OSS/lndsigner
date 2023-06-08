@@ -100,11 +100,8 @@ func (l *lndHarness) Start() {
 	go waitProc(l.lndSignerCmd)
 
 	// Start lnd.
-	acctsResp, err := l.tctx.vaultClient.ReadWithData(
-		"lndsigner/lnd-nodes/accounts",
-		map[string][]string{
-			"node": []string{l.idPubKey},
-		},
+	acctsResp, err := l.tctx.vaultClient.Read(
+		"lndsigner/lnd-nodes/" + l.idPubKey + "/accounts",
 	)
 	require.NoError(l.tctx.t, err)
 

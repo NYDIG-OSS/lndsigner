@@ -105,7 +105,7 @@ Next, get the account list for the node (this works on Linux with `jq` installed
 
 ```
 ~/.lnd-watchonly$ VAULT_ADDR=http://127.0.0.1:8200 VAULT_TOKEN=root \
-   vault read lndsigner/lnd-nodes/accounts node=*pubkey* | \
+   vault read lndsigner/lnd-nodes/*pubkey*/accounts | \
    tail -n 1 | sed s/acctList\\s*// | jq > accounts.json
 ```
 
