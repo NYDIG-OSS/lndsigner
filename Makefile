@@ -1,8 +1,10 @@
-.PHONY: docker docker-itest docker-test docker-test-all docker-check docker-shell itest test test-all
+.PHONY: cover docker docker-itest docker-test docker-test-all docker-check docker-shell itest test test-all
 
-IMG_NAME      := lndsigner-builder
+IMG_NAME    := lndsigner-builder
 
 CPLATFORM   := $(shell uname -m)
+
+GOCOVERDIR  := /tmp/lndsigner-icover-$(shell date +%s)
 
 ifeq ($(CPLATFORM), x86_64)
 	GOPLATFORM := amd64
@@ -55,11 +57,18 @@ docker-shell: docker
 		--mount type=bind,source=$(CURDIR),target=/app $(IMG_NAME):latest \
 		bash -l 
 
-itest:
-	go install -race -buildvcs=false ./cmd/... && go test -v -count=1 -race -tags=itest -cover ./itest
+cover:
+	mkdir $(GOCOVERDIR) && mkdir $(GOCOVERDIR)/lndsignerd && \
+		mkdir $(GOCOVERDIR)/plugin && mkdir $(GOCOVERDIR)/combined
+
+itest: cover
+	go install -race -cover -buildvcs=false ./cmd/... && \
+		GOCOVERDIR=$(GOCOVERDIR) go test -v -count=1 -race -tags=itest ./itest && \
+		go tool covdata merge -pcombine -i=$(GOCOVERDIR)/lndsignerd,$(GOCOVERDIR)/plugin -o=$(GOCOVERDIR)/combined && \
+		go tool covdata textfmt -i=$(GOCOVERDIR)/combined -o icover.out && \
+		rm -rf $(GOCOVERDIR)
 
 test:
-	go test -v -count=1 -race -cover ./...
+	go test -v -count=1 -race -coverprofile cover.out ./...
 
-test-all:
-	go install -race -buildvcs=false ./cmd/... && go test -v -count=1 -race -tags=itest -cover ./...
+test-all: test itest

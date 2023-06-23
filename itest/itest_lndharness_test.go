@@ -14,8 +14,6 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
-	"github.com/nydig-oss/lndsigner"
-	"github.com/nydig-oss/lndsigner/itest"
 	"io/fs"
 	"math/big"
 	"net"
@@ -24,6 +22,9 @@ import (
 	"path"
 	"testing"
 	"time"
+
+	"github.com/nydig-oss/lndsigner"
+	"github.com/nydig-oss/lndsigner/itest"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
@@ -95,7 +96,12 @@ func (l *lndHarness) Start() {
 	l.lndSignerCmd.Env = append(l.lndSignerCmd.Env,
 		"VAULT_ADDR=http://127.0.0.1:"+l.tctx.vaultPort,
 		"VAULT_TOKEN=root",
+		"GOCOVERDIR="+path.Join(os.Getenv("GOCOVERDIR"), "lndsignerd"),
 	)
+
+	l.lndSignerCmd.Cancel = func() error {
+		return l.lndSignerCmd.Process.Signal(os.Interrupt)
+	}
 
 	go waitProc(l.lndSignerCmd)
 
@@ -265,7 +271,9 @@ func waitFile(t *testing.T, file, waitStr string) {
 // exit error, the program's entire stderr and stdout are logged.
 func waitProc(cmd *exec.Cmd) {
 	output, err := cmd.CombinedOutput()
-	if err != nil && err.Error() != "signal: killed" {
+	if err != nil && err.Error() != "signal: killed" &&
+		err != context.Canceled {
+
 		config := zap.NewDevelopmentConfig()
 		config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 		config.EncoderConfig.EncodeCaller = nil

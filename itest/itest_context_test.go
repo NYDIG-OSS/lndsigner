@@ -35,6 +35,7 @@ type testContext struct {
 	vaultPort   string
 	vaultCmd    *exec.Cmd
 	vaultClient *api.Logical
+	vaultSys    *api.Sys
 
 	bitcoinDir     string
 	bitcoinRPC     string
@@ -137,6 +138,11 @@ func newTestContext(t *testing.T) *testContext {
 		"-dev-root-token-id=root", "-dev-plugin-dir="+pluginDir,
 		"-dev-listen-address=127.0.0.1:"+tctx.vaultPort)
 
+	tctx.vaultCmd.Env = append(tctx.vaultCmd.Env,
+		"PATH="+os.Getenv("PATH"),
+		"GOCOVERDIR="+path.Join(os.Getenv("GOCOVERDIR"), "plugin"),
+	)
+
 	go waitProc(tctx.vaultCmd)
 
 	vaultClientConf := api.DefaultConfig()
@@ -148,9 +154,9 @@ func newTestContext(t *testing.T) *testContext {
 	vaultClient.SetToken("root")
 
 	tctx.vaultClient = vaultClient.Logical()
+	tctx.vaultSys = vaultClient.Sys()
 
-	vaultSys := vaultClient.Sys()
-	err = vaultSys.Mount("lndsigner", &api.MountInput{
+	err = tctx.vaultSys.Mount("lndsigner", &api.MountInput{
 		Type: "vault-plugin-lndsigner",
 	})
 	require.NoError(t, err)
@@ -213,6 +219,7 @@ func (tctx *testContext) Close() {
 		lnd.Close()
 	}
 
+	_ = tctx.vaultSys.Unmount("lndsigner")
 	_ = tctx.bitcoinCli("stop")
 	_ = tctx.vaultCmd.Process.Signal(os.Interrupt)
 

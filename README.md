@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/NYDIG-OSS/lndsigner/badge.svg?branch=main)](https://coveralls.io/github/NYDIG-OSS/lndsigner?branch=main)
+
 # lndsigner
 `lndsigner` is a [remote signer](https://github.com/lightningnetwork/lnd/blob/master/docs/remote-signing.md) for [lnd](https://github.com/lightningnetwork/lnd). Currently, it can do the following:
 - [x] store seeds for multiple nodes in [Hashicorp Vault](https://github.com/hashicorp/vault/)
