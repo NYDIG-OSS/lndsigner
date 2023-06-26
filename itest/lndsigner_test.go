@@ -58,6 +58,8 @@ func TestIntegration(t *testing.T) {
 
 	tctx.waitForSync()
 
+	t.Run("check vault for parameter path override", tctx.testPathOverride)
+
 	t.Run("fund each lnd with a p2tr address", tctx.testFundLnds)
 
 	tctx.mine(1)
@@ -194,5 +196,38 @@ func (tctx *testContext) testEachSignVerifyEachOther(t *testing.T) {
 		require.True(t, resp["valid"].(bool))
 
 		tctx.log.Info(message)
+	})
+}
+
+// testPathOverride attempts to get accounts from the vault for each node by
+// calling with a path including node ID
+// "000000000000000000000000000000000000000000000000000000000000000000"
+// and the node's pubkey. This shouldn't work, according to
+// https://github.com/hashicorp/vault/blob/339b314f20fbd5deaeb5524f0a0db7df66f6524e/sdk/framework/path.go#L74
+func (tctx *testContext) testPathOverride(t *testing.T) {
+	tctx.testEach(func(lnd *lndHarness) {
+		// Attempt to read accounts for the node by overriding an
+		// invalid node ID in the path with a query parameter specifying
+		// the real node ID.
+		_, err := tctx.vaultClient.ReadWithData(
+			"lndsigner/lnd-nodes/00000000000000000000000000000000"+
+				"0000000000000000000000000000000000/accounts",
+			map[string][]string{
+				"node": []string{lnd.idPubKey},
+			},
+		)
+		require.ErrorContains(tctx.t, err, "node not found")
+
+		// Attempt to read accounts for the node by overriding an
+		// invalid-length node ID in the path with a query parameter
+		// specifying the real node ID. We should get nothing at all.
+		x, err := tctx.vaultClient.ReadWithData(
+			"lndsigner/lnd-nodes/0000000000000000000000/accounts",
+			map[string][]string{
+				"node": []string{lnd.idPubKey},
+			},
+		)
+		require.NoError(tctx.t, err)
+		require.Nil(tctx.t, x)
 	})
 }

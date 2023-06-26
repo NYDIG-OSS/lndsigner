@@ -112,7 +112,6 @@ func (k *KeyRing) ECDH(keyDesc KeyDescriptor, pub *btcec.PublicKey) ([32]byte,
 	error) {
 
 	reqData := map[string]interface{}{
-		"node": k.node,
 		"path": []int{
 			int(vault.Bip0043purpose +
 				hdkeychain.HardenedKeyStart),
@@ -133,7 +132,7 @@ func (k *KeyRing) ECDH(keyDesc KeyDescriptor, pub *btcec.PublicKey) ([32]byte,
 	log.Debugf("Sending data %+v for shared key request", reqData)
 
 	sharedKeyResp, err := k.client.Write(
-		"lndsigner/lnd-nodes/ecdh",
+		"lndsigner/lnd-nodes/"+k.node+"/ecdh",
 		reqData,
 	)
 	if err != nil {
@@ -176,7 +175,6 @@ func (k *KeyRing) SignMessage(keyLoc KeyLocator, msg []byte, doubleHash bool,
 	}
 
 	reqData := map[string]interface{}{
-		"node": k.node,
 		"path": []int{
 			int(vault.Bip0043purpose + hdkeychain.HardenedKeyStart),
 			int(k.coin + hdkeychain.HardenedKeyStart),
@@ -195,7 +193,7 @@ func (k *KeyRing) SignMessage(keyLoc KeyLocator, msg []byte, doubleHash bool,
 	log.Debugf("Sending data %+v for signing request", reqData)
 
 	signResp, err := k.client.Write(
-		"lndsigner/lnd-nodes/sign",
+		"lndsigner/lnd-nodes/"+k.node+"/sign",
 		reqData,
 	)
 	if err != nil {
@@ -226,7 +224,6 @@ func (k *KeyRing) SignMessageSchnorr(keyLoc KeyLocator, msg []byte,
 	}
 
 	reqData := map[string]interface{}{
-		"node": k.node,
 		"path": []int{
 			int(vault.Bip0043purpose + hdkeychain.HardenedKeyStart),
 			int(k.coin + hdkeychain.HardenedKeyStart),
@@ -245,7 +242,7 @@ func (k *KeyRing) SignMessageSchnorr(keyLoc KeyLocator, msg []byte,
 	log.Debugf("Sending data %+v for signing request", reqData)
 
 	signResp, err := k.client.Write(
-		"lndsigner/lnd-nodes/sign",
+		"lndsigner/lnd-nodes/"+k.node+"/sign",
 		reqData,
 	)
 	if err != nil {
@@ -395,7 +392,6 @@ func (k *KeyRing) signSegWitV0(in *psbt.PInput, tx *wire.MsgTx,
 		in.Unknowns)
 
 	reqData := map[string]interface{}{
-		"node":   k.node,
 		"path":   sliceUint32ToInt(in.Bip32Derivation[0].Bip32Path),
 		"method": "ecdsa",
 		"digest": hex.EncodeToString(digest),
@@ -406,7 +402,7 @@ func (k *KeyRing) signSegWitV0(in *psbt.PInput, tx *wire.MsgTx,
 	log.Debugf("Sending data %+v for signing request", reqData)
 
 	signResp, err := k.client.Write(
-		"lndsigner/lnd-nodes/sign",
+		"lndsigner/lnd-nodes/"+k.node+"/sign",
 		reqData,
 	)
 	if err != nil {
@@ -465,7 +461,6 @@ func (k *KeyRing) signSegWitV1KeySpend(in *psbt.PInput, tx *wire.MsgTx,
 	}
 
 	reqData := map[string]interface{}{
-		"node":     k.node,
 		"path":     sliceUint32ToInt(in.Bip32Derivation[0].Bip32Path),
 		"method":   "schnorr",
 		"digest":   hex.EncodeToString(digest),
@@ -477,7 +472,7 @@ func (k *KeyRing) signSegWitV1KeySpend(in *psbt.PInput, tx *wire.MsgTx,
 	log.Debugf("Sending data %+v for signing request", reqData)
 
 	signResp, err := k.client.Write(
-		"lndsigner/lnd-nodes/sign",
+		"lndsigner/lnd-nodes/"+k.node+"/sign",
 		reqData,
 	)
 	if err != nil {
@@ -523,7 +518,6 @@ func (k *KeyRing) signSegWitV1ScriptSpend(in *psbt.PInput, tx *wire.MsgTx,
 	}
 
 	reqData := map[string]interface{}{
-		"node":   k.node,
 		"path":   sliceUint32ToInt(in.Bip32Derivation[0].Bip32Path),
 		"method": "schnorr",
 		"digest": hex.EncodeToString(digest),
@@ -534,7 +528,7 @@ func (k *KeyRing) signSegWitV1ScriptSpend(in *psbt.PInput, tx *wire.MsgTx,
 	log.Debugf("Sending data %+v for signing request", reqData)
 
 	signResp, err := k.client.Write(
-		"lndsigner/lnd-nodes/sign",
+		"lndsigner/lnd-nodes/"+k.node+"/sign",
 		reqData,
 	)
 	if err != nil {

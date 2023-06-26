@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/NYDIG-OSS/lndsigner/badge.svg?branch=main)](https://coveralls.io/github/NYDIG-OSS/lndsigner?branch=main)
+
 # lndsigner
 `lndsigner` is a [remote signer](https://github.com/lightningnetwork/lnd/blob/master/docs/remote-signing.md) for [lnd](https://github.com/lightningnetwork/lnd). Currently, it can do the following:
 - [x] store seeds for multiple nodes in [Hashicorp Vault](https://github.com/hashicorp/vault/)
@@ -105,7 +107,7 @@ Next, get the account list for the node (this works on Linux with `jq` installed
 
 ```
 ~/.lnd-watchonly$ VAULT_ADDR=http://127.0.0.1:8200 VAULT_TOKEN=root \
-   vault read lndsigner/lnd-nodes/accounts node=*pubkey* | \
+   vault read lndsigner/lnd-nodes/*pubkey*/accounts | \
    tail -n 1 | sed s/acctList\\s*// | jq > accounts.json
 ```
 
