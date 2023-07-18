@@ -90,7 +90,7 @@ POST - import existing LND node into vault with seedphrase and passphrase
 
 func (b *backend) accountsPath() *framework.Path {
 	return &framework.Path{
-		Pattern: "lnd-nodes/accounts/?",
+		Pattern: "lnd-nodes/(?P<node>[[:xdigit:]]{66})/accounts/?",
 		Operations: map[logical.Operation]framework.OperationHandler{
 			logical.ReadOperation: wrapOp(b.listAccounts),
 		},
@@ -115,7 +115,7 @@ only LND
 
 func (b *backend) ecdhPath() *framework.Path {
 	return &framework.Path{
-		Pattern: "lnd-nodes/ecdh/?",
+		Pattern: "lnd-nodes/(?P<node>[[:xdigit:]]{66})/ecdh/?",
 		Operations: map[logical.Operation]framework.OperationHandler{
 			logical.UpdateOperation: wrapOp(b.ecdh),
 		},
@@ -160,7 +160,7 @@ peer pubkey
 
 func (b *backend) signPath() *framework.Path {
 	return &framework.Path{
-		Pattern: "lnd-nodes/sign/?",
+		Pattern: "lnd-nodes/(?P<node>[[:xdigit:]]{66})/sign/?",
 		Operations: map[logical.Operation]framework.OperationHandler{
 			logical.ReadOperation:   wrapOp(b.derivePubKey),
 			logical.UpdateOperation: wrapOp(b.deriveAndSign),

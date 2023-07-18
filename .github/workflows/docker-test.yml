@@ -16,3 +16,20 @@ jobs:
 
       - name: Run tests in docker container
         run:  make docker-test-all
+
+      - name: Upload unit test coverage
+        uses: shogo82148/actions-goveralls@v1
+        with:
+          path-to-profile: cover.out
+          parallel: true
+
+      - name: Upload integration test coverage
+        uses: shogo82148/actions-goveralls@v1
+        with:
+          path-to-profile: icover.out
+          parallel: true
+
+      - name: Generate coverage badge
+        uses: shogo82148/actions-goveralls@v1
+        with:
+          parallel-finished: true

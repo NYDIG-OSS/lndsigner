@@ -122,11 +122,10 @@ func TestECDH(t *testing.T) {
 				data map[string]interface{}) (*api.Secret,
 				error) {
 
-				require.Equal(t, "lndsigner/lnd-nodes/ecdh",
-					path)
+				require.Equal(t, "lndsigner/lnd-nodes/"+
+					keyRing.node+"/ecdh", path)
 
 				require.Equal(t, map[string]interface{}{
-					"node": keyRing.node,
 					"path": []int{2147484665, 2147483649,
 						2147483654, 0, 0},
 					"peer":   peerPubHex,
@@ -168,7 +167,6 @@ func TestSignMessage(t *testing.T) {
 		{
 			name: "sign single",
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "ecdsa",
@@ -183,7 +181,6 @@ func TestSignMessage(t *testing.T) {
 			name:       "sign double",
 			doubleHash: true,
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "ecdsa",
@@ -198,7 +195,6 @@ func TestSignMessage(t *testing.T) {
 			name:    "sign single compact",
 			compact: true,
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "ecdsa-compact",
@@ -214,7 +210,6 @@ func TestSignMessage(t *testing.T) {
 			doubleHash: true,
 			compact:    true,
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "ecdsa-compact",
@@ -228,7 +223,6 @@ func TestSignMessage(t *testing.T) {
 		{
 			name: "error on request",
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "ecdsa",
@@ -240,7 +234,6 @@ func TestSignMessage(t *testing.T) {
 		{
 			name: ErrNoSignatureReturned.Error(),
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "ecdsa",
@@ -251,7 +244,6 @@ func TestSignMessage(t *testing.T) {
 		{
 			name: "signature not hex",
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "ecdsa",
@@ -270,8 +262,8 @@ func TestSignMessage(t *testing.T) {
 				data map[string]interface{}) (*api.Secret,
 				error) {
 
-				require.Equal(t, "lndsigner/lnd-nodes/sign",
-					path)
+				require.Equal(t, "lndsigner/lnd-nodes/"+
+					keyRing.node+"/sign", path)
 
 				require.Equal(t, testCase.reqData, data)
 
@@ -311,7 +303,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 		{
 			name: "sign single",
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -326,7 +317,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 			name:       "sign double",
 			doubleHash: true,
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -340,7 +330,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 		{
 			name: "sign single tweaked",
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -355,7 +344,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 			name:       "sign double tweaked",
 			doubleHash: true,
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -369,7 +357,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 		{
 			name: "error on request",
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -381,7 +368,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 		{
 			name: ErrNoSignatureReturned.Error(),
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -392,7 +378,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 		{
 			name: "signature not hex",
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -406,7 +391,6 @@ func TestSignMessageSchnorr(t *testing.T) {
 		{
 			name: schnorr.ErrSigTooShort.Error(),
 			reqData: map[string]interface{}{
-				"node": keyRing.node,
 				"path": []int{2147484665, 2147483649,
 					2147483654, 0, 0},
 				"method": "schnorr",
@@ -428,8 +412,8 @@ func TestSignMessageSchnorr(t *testing.T) {
 				data map[string]interface{}) (*api.Secret,
 				error) {
 
-				require.Equal(t, "lndsigner/lnd-nodes/sign",
-					path)
+				require.Equal(t, "lndsigner/lnd-nodes/"+
+					keyRing.node+"/sign", path)
 
 				require.Equal(t, testCase.reqData, data)
 
@@ -473,7 +457,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "p2tr spend",
 			packet: p2trPsbt,
 			reqData: map[string]interface{}{
-				"node":     keyRing.node,
 				"digest":   "6a14f55652583393923a9f6909c9be3ada3e5bd724c324d8a554b823388491ad",
 				"path":     []int{2147483734, 2147483648, 2147483648, 0, 0},
 				"method":   "schnorr",
@@ -488,7 +471,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "p2wkh spend",
 			packet: p2wkhPsbt,
 			reqData: map[string]interface{}{
-				"node":   keyRing.node,
 				"digest": "2046c479fa1d00033ff7239086071cb4abadc2c99e2dd14e6e1af7ed8060f3ca",
 				"path":   []int{2147483732, 2147483648, 2147483648, 0, 0},
 				"method": "ecdsa",
@@ -503,7 +485,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "np2wkh spend",
 			packet: np2wkhPsbt,
 			reqData: map[string]interface{}{
-				"node":   keyRing.node,
 				"digest": "5f5c0b1eb31d60a15c0b607ee037b97bbb2ef375d127be13c4718ddc5b67dc70",
 				"path":   []int{2147483697, 2147483648, 2147483648, 0, 0},
 				"method": "ecdsa",
@@ -518,7 +499,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "ln1tweak spend",
 			packet: tweak1Psbt,
 			reqData: map[string]interface{}{
-				"node":     keyRing.node,
 				"digest":   "acf17dc76b84ab1b061f274ccea1b680e7195d34f138c92bec64f66a6ed11b7c",
 				"ln1tweak": "cf374dcf99541cff08176226b16e1848eee7f00430da428a74ddc671224bbe8f",
 				"path":     []int{2147484665, 2147483649, 2147483650, 0, 0},
@@ -534,7 +514,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   ErrNoPubkeyReturned.Error(),
 			packet: np2wkhPsbt,
 			reqData: map[string]interface{}{
-				"node":   keyRing.node,
 				"digest": "5f5c0b1eb31d60a15c0b607ee037b97bbb2ef375d127be13c4718ddc5b67dc70",
 				"path":   []int{2147483697, 2147483648, 2147483648, 0, 0},
 				"method": "ecdsa",
@@ -548,7 +527,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "pubkey not hex",
 			packet: np2wkhPsbt,
 			reqData: map[string]interface{}{
-				"node":   keyRing.node,
 				"digest": "5f5c0b1eb31d60a15c0b607ee037b97bbb2ef375d127be13c4718ddc5b67dc70",
 				"path":   []int{2147483697, 2147483648, 2147483648, 0, 0},
 				"method": "ecdsa",
@@ -563,7 +541,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "p2wkh and np2wkh error on request",
 			packet: np2wkhPsbt,
 			reqData: map[string]interface{}{
-				"node":   keyRing.node,
 				"digest": "5f5c0b1eb31d60a15c0b607ee037b97bbb2ef375d127be13c4718ddc5b67dc70",
 				"path":   []int{2147483697, 2147483648, 2147483648, 0, 0},
 				"method": "ecdsa",
@@ -575,7 +552,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "np2wkh and p2wkh " + ErrNoSignatureReturned.Error(),
 			packet: np2wkhPsbt,
 			reqData: map[string]interface{}{
-				"node":   keyRing.node,
 				"digest": "5f5c0b1eb31d60a15c0b607ee037b97bbb2ef375d127be13c4718ddc5b67dc70",
 				"path":   []int{2147483697, 2147483648, 2147483648, 0, 0},
 				"method": "ecdsa",
@@ -586,7 +562,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "np2wkh and p2wkh signature not hex",
 			packet: np2wkhPsbt,
 			reqData: map[string]interface{}{
-				"node":   keyRing.node,
 				"digest": "5f5c0b1eb31d60a15c0b607ee037b97bbb2ef375d127be13c4718ddc5b67dc70",
 				"path":   []int{2147483697, 2147483648, 2147483648, 0, 0},
 				"method": "ecdsa",
@@ -600,7 +575,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "p2wkh and np2wkh error on request",
 			packet: p2trPsbt,
 			reqData: map[string]interface{}{
-				"node":     keyRing.node,
 				"digest":   "6a14f55652583393923a9f6909c9be3ada3e5bd724c324d8a554b823388491ad",
 				"path":     []int{2147483734, 2147483648, 2147483648, 0, 0},
 				"method":   "schnorr",
@@ -613,7 +587,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "p2tr " + ErrNoSignatureReturned.Error(),
 			packet: p2trPsbt,
 			reqData: map[string]interface{}{
-				"node":     keyRing.node,
 				"digest":   "6a14f55652583393923a9f6909c9be3ada3e5bd724c324d8a554b823388491ad",
 				"path":     []int{2147483734, 2147483648, 2147483648, 0, 0},
 				"method":   "schnorr",
@@ -625,7 +598,6 @@ func TestSignPsbt(t *testing.T) {
 			name:   "p2tr signature not hex",
 			packet: p2trPsbt,
 			reqData: map[string]interface{}{
-				"node":     keyRing.node,
 				"digest":   "6a14f55652583393923a9f6909c9be3ada3e5bd724c324d8a554b823388491ad",
 				"path":     []int{2147483734, 2147483648, 2147483648, 0, 0},
 				"method":   "schnorr",
@@ -644,8 +616,8 @@ func TestSignPsbt(t *testing.T) {
 				data map[string]interface{}) (*api.Secret,
 				error) {
 
-				require.Equal(t, "lndsigner/lnd-nodes/sign",
-					path)
+				require.Equal(t, "lndsigner/lnd-nodes/"+
+					keyRing.node+"/sign", path)
 
 				require.Equal(t, testCase.reqData, data)
 
